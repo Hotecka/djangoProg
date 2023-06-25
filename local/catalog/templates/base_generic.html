@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block title %}<title>Local Library</title>{% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="h-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        {% block header %}
+            <div class="navbar-nav">
+                {% if user.is_authenticated %}
+                <a class = 'navbar-item nav-link mx-2' href="{% url 'catalog:index'%}">Home</a>
+                
+                <a class = 'navbar-item nav-link mx-2' href="{% url 'catalog:books' %}">All Books</a>
+                
+                <a class = 'navbar-item nav-link mx-2' href="{% url 'catalog:profile' username=request.user.username%}">{{user.username}}</a>
+                
+                <form action = "{% url 'catalog:search_result' %}"  class="d-flex align-items-center">
+                    <input name="q" type="text" placeholder="Search...">
+                </form>
+                <a class = 'navbar-item nav-link' href = "{% url 'cart:cart_detail'%}" style="margin-left: 20px;">Cart</a>
+                <a class = 'navbar-item nav-link' href = "{% url 'catalog:logout' %}">Logout</a>
+                <a class = 'navbar-item nav-link' href="{% url 'catalog:contacts' %}">Contacts</a>
+                {%endif%}
+                
+            </div>
+        {% endblock %}
+    </nav>
+    <div class="container h-100 mt-5 d-flex">
+                {% block content %}{% endblock %}
+                {% block pagination %}
+                {%if is_paginated%}
+                <div class = "pagination">
+                    <span class="page-links">
+                        {% if page_obj.has_previous%}
+                        <a href="{{request.path}}?page={{page_obj.previous_page_number}}">Prev</a>
+                        {%endif%}
+                        <span>
+                              &nbsp; Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}&nbsp;
+                        </span>
+                        {% if page_obj.has_next%}
+                        <a href="{{request.path}}?page={{page_obj.next_page_number}}">Next</a>
+                        {%endif%}
+                    </span>
+                </div>
+                {%endif%}
+
+
+                {% endblock %}
+            </div>
+
+</body>
+</html>
+

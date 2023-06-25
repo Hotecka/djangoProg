@@ -1,0 +1,31 @@
+{% extends 'base_generic.html' %}
+
+
+{% block content %}
+    <div id="sidebar" class="nav nav-pills flex-column mb-auto" style="width: fit-content;">
+        <h3>Categories</h3>
+        <ul>
+            <li {% if not category %} class="selected"{% endif %}>
+                <a href="{% url "catalog:books" %}">All</a>
+            </li>
+            {% for c in categories %}   
+                <li {% if category.slug == c.slug %} class="selected" {% endif %}>
+                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="d-flex flex-column mx-4">
+        <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+        <div class="d-flex my-5">
+            {% for product in products %}
+            <br/>
+                <div class="item  d-flex flex-column text-center mx-3 align-items-center" style="width: 150px;height: 150px;">
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+                    ${{ product.price }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+{% endblock %}

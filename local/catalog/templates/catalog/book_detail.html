@@ -1,0 +1,28 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="d-flex flex-column">
+    <h1 style="margin-bottom:30px">Title: {{book.name}}</h1>
+
+    <p><b>Author: </b>{{book.author}}</p>
+    <p><b>Summary: </b>{{book.description}}</p>
+    <p><b>Genres: </b>{{book.category}}</p>
+    <p><b>Price: </b>{{book.price}}rubles</p>
+    {%if book.available%}
+    <p><b>Available</b> {{book.stock}}</p>
+    <form action="{% url "catalog:book-detail" book.id %}" method="post" class="d-flex flex-column text-center">
+        {% csrf_token %}
+        <p>Введите количество книг для добавления в корзину</p>
+        <input type="number" name="count"/>
+        <input type="submit" value="Add to cart">
+        <input style = "display: none;" name="user_id" value="{{ user }}"/>
+        <input style = "display: none;" name="price" value="{{ book.price }}"/>
+        
+    </form>
+    <p><b>Visitors count</b>: {{book.click_count}}</p>
+    <p><b>Order count</b>: {{book.order_count}}</p>
+    {% else %}
+    <p><b>Not Available</b></p>
+    {%endif%}
+</div>
+{% endblock %}

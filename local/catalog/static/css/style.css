@@ -1,0 +1,13 @@
+.sidebar-nav {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}/*  БЭМ  -  Блок Элемент Модификатор  */
+
+.pageheader{
+    display: flex;
+}
+
+.custom-container-fluid{
+    height: 1500px;
+}

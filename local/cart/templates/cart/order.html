@@ -1,0 +1,44 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="d-flex flex-column">
+    {%if cart %}
+        <h1 style="margin-bottom:30px">Go on and order this</h1>
+        <table class="cart text-center">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit price</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+        {% for item in cart%}
+            {% with product=item.book_id %}
+                
+            <tr class="text-center">
+                <td class="d-flex mx-3">{{ product.name }}</td>
+                <td>{{ item.count }}</td>
+                <td class="num  mx-3">${{ product.price }}</td>
+                <td class="num  mx-3">${{ item.total_price }}</td>
+            </tr> 
+            {% endwith %}
+        {% endfor %}
+            <tr class="total my-3">
+                <td>Total</td>
+                <td colspan="4"></td>
+                <td class="num">${{ summary }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <p>Fulfill the fields down there</p>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-dark my-2">Подтвердить изменение профиля</button>
+        </form>
+    {% else %}
+    {% endif %}
+</div>
+{% endblock %}

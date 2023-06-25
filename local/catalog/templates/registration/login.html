@@ -1,0 +1,38 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+  {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+  {% else %}
+    <p>Please login to see this page.</p>
+  {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'catalog:login' %}" class="d-flex flex-column align-items-center mt-5 shadow p-3" style="height: 400px; justify-content: center;">
+{% csrf_token %}
+
+
+  {{form.as_p}}
+
+
+
+
+<input type="submit" value="login"  />
+<input type="hidden" name="next" value="{{ next }}" />
+<p>No account?</p>
+<br/>
+<a href="{% url 'catalog:register' %}">Register</a>  
+</form>
+
+
+{# Assumes you setup the password_reset view in your URLconf #}
+
+
+{% endblock %}

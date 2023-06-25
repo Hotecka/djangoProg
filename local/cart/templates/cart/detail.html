@@ -1,0 +1,63 @@
+{% extends "base_generic.html" %}
+{% block content %}
+<div class="d-flex flex-column">
+    
+    <h1>Your shopping cart</h1>
+    <table class="cart text-center">
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit price</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+    {% if cart %}
+        {% for item in cart %}
+            {% with product=item.book_id %}
+            
+                <tr class="text-center">
+                    <td class="d-flex mx-3">{{ product.name }}</td>
+                    <td>{{ item.count }}</td>
+                    <td class="num  mx-3">${{ product.price }}</td>
+                    <td class="num  mx-3">${{ item.total_price }}</td>
+                    <td>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button type="submit" name="product" value="{{item.id}}">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                
+                
+            {% endwith %}
+        {% endfor %}
+        <tr class="total my-3">
+            <td>Total</td>
+            <td colspan="4"></td>
+            <td class="num">${{ summary }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-right my-4 mx-4">
+        <a href="{% url "catalog:books" %}" class="button light">Continue shopping</a>
+        <a href="{% url "cart:order" %}" class="button mx-5">Checkout</a>
+    </p>
+    {% else %}
+        <section class="empty-cart page-wrapper">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="block text-center">
+                <i class="tf-ion-ios-cart-outline"></i>
+                <h1 class="text-center">Ваша корзина пуста.</h1>
+            
+                <a href="{% url 'catalog:books' %}" class="btn btn-main mt-20">За покупками!</a>
+        </div>
+        </div>
+    </div>
+    </section>
+</div>
+        {% endif %}
+{% endblock %}
